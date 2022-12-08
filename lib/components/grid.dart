@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neymis/components/tile.dart';
 
 class Grid extends StatelessWidget {
   const Grid({
@@ -21,7 +22,7 @@ class Grid extends StatelessWidget {
           border: Border.all()
         ),
 
-        child: Center(child: Text(index.toString())),
+        child: Tile(index: index,),
       );
     }
     );

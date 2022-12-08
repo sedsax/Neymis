@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:neymis/controller.dart';
+import 'package:provider/provider.dart';
 
 import '../data/keys_map.dart';
 
@@ -29,7 +31,9 @@ class KeyboardRow extends StatelessWidget {
                     height: size.height*0.09,
                     child: Material(
                       child: InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          Provider.of<Controller>(context, listen: false).setKeyTapped(value: e.key);
+                        },
                           child: Center(child: Text(e.key))),
                     )),
               ),
