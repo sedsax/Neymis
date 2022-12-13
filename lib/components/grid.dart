@@ -12,7 +12,7 @@ class Grid extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.fromLTRB(38, 12, 38, 10),
         itemCount: 30,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
           crossAxisCount: 5,
