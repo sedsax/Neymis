@@ -4,7 +4,8 @@ import 'package:neymis/data/keys_map.dart';
 import 'package:neymis/models/tile_model.dart';
 
 class Controller extends ChangeNotifier {
-
+  bool checkLine = false, backOrEnterTapped = false, gameWon=false;
+  bool gameCompleted = false;
   String correctWord = "";
 
   int currentTile=0, currentRow=0;
@@ -15,6 +16,7 @@ class Controller extends ChangeNotifier {
   setKeyTapped({required String value}) {
     if(value=='SOR') {
       if(currentTile == 5*(currentRow+1)) {
+        backOrEnterTapped = true;
       //  currentRow++;
         checkWord();
        // print('kelimeyi kontrol et');
@@ -24,12 +26,14 @@ class Controller extends ChangeNotifier {
       if(currentTile>5*(currentRow+1)-5) {
         currentTile--;
         tilesEntered.removeLast();
+        backOrEnterTapped = true;
       }
 
     }else{
       if(currentTile<5*(currentRow+1)) {
         tilesEntered.add(TileModel(letter: value, answerStage: AnswerStage.notAnswered));
         currentTile++;
+        backOrEnterTapped = false;
       }
     }
     notifyListeners();
@@ -52,6 +56,8 @@ class Controller extends ChangeNotifier {
       for(int i=currentRow*5; i<(currentRow*5)+5; i++) {
         tilesEntered[i].answerStage = AnswerStage.correct;
         keysMap.update(tilesEntered[i].letter, (value) => AnswerStage.correct);
+        gameWon = true;
+        gameCompleted = true;
       }
     }else{
       for(int i=0; i<5; i++) {
@@ -79,16 +85,24 @@ class Controller extends ChangeNotifier {
           }
         }
       }
+      for(int i=currentRow*5; i<(currentRow*5)+5; i++) {
+        if(tilesEntered[i].answerStage == AnswerStage.notAnswered) {
+          tilesEntered[i].answerStage = AnswerStage.incorrect;
+          keysMap.update(tilesEntered[i].letter, (value) => AnswerStage.incorrect);
+        }
+      }
 
     }
-    for(int i=currentRow*5; i<(currentRow*5)+5; i++) {
-     if(tilesEntered[i].answerStage == AnswerStage.notAnswered) {
-       tilesEntered[i].answerStage = AnswerStage.incorrect;
-       keysMap.update(tilesEntered[i].letter, (value) => AnswerStage.incorrect);
-     }
+
+    if(currentRow == 6) {
+      gameCompleted = true;
     }
 
+    if(gameCompleted) {
+      // calculateStats();
+    }
     currentRow++;
+    checkLine = true;
     notifyListeners();
   }
 

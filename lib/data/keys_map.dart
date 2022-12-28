@@ -1,8 +1,6 @@
 import 'package:neymis/constants/answer_stages.dart';
 
 Map<String, AnswerStage> keysMap = {
-  'Q' : AnswerStage.notAnswered,
-  'W' : AnswerStage.notAnswered,
   'E' : AnswerStage.notAnswered,
   'R' : AnswerStage.notAnswered,
   'T' : AnswerStage.notAnswered,
@@ -28,7 +26,6 @@ Map<String, AnswerStage> keysMap = {
   //-------------------------------
   'SOR' : AnswerStage.notAnswered,
   'Z' : AnswerStage.notAnswered,
-  'X' : AnswerStage.notAnswered,
   'C' : AnswerStage.notAnswered,
   'V' : AnswerStage.notAnswered,
   'B' : AnswerStage.notAnswered,

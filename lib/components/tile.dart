@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:neymis/constants/answer_stages.dart';
 import 'package:neymis/constants/colors.dart';
-import 'package:neymis/controller.dart';
+import 'package:neymis/providers/controller.dart';
 import 'package:provider/provider.dart';
 
 class Tile extends StatefulWidget {
@@ -15,10 +17,32 @@ class Tile extends StatefulWidget {
   State<Tile> createState() => _TileState();
 }
 
-class _TileState extends State<Tile> {
+class _TileState extends State<Tile> with SingleTickerProviderStateMixin{
 
-  Color _backgroundColor = Colors.transparent;
+  late AnimationController animationController;
+
+  Color _backgroundColor = Colors.transparent, _borderColor=Colors.transparent;
   late AnswerStage _answerStage;
+  bool _animate = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _borderColor = Theme.of(context).primaryColorLight;
+    });
+
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 500),
+        vsync: this
+    );
+    
+    super.initState();
+  }
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +54,75 @@ class _TileState extends State<Tile> {
         if(widget.index < notifier.tilesEntered.length) {
           text=notifier.tilesEntered[widget.index].letter;
           _answerStage = notifier.tilesEntered[widget.index].answerStage;
-          if(_answerStage == AnswerStage.correct) {
-            _backgroundColor = correctGreen;
-          }else if(_answerStage == AnswerStage.contains){
-            _backgroundColor = containsYellow;
-          }else if(_answerStage == AnswerStage.incorrect){
-            _backgroundColor = Theme.of(context).primaryColorDark;
-          }else{
-            fontColor = Theme.of(context).textTheme.bodyText2?.color ?? Colors.black;
+
+          if(notifier.checkLine) {
+            final delay = widget.index - (notifier.currentRow - 1) * 5 ;
+            Future.delayed(Duration(milliseconds: 300 * delay),(){
+              animationController.forward();
+              notifier.checkLine = false;
+            });
+
+            _backgroundColor = Theme
+                .of(context)
+                .primaryColorLight;
+            if (_answerStage == AnswerStage.correct) {
+              _backgroundColor = correctGreen;
+            } else if (_answerStage == AnswerStage.contains) {
+              _backgroundColor = containsYellow;
+            } else if (_answerStage == AnswerStage.incorrect) {
+              _backgroundColor = Theme
+                  .of(context)
+                  .primaryColorDark;
+            } else {
+              fontColor = Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.color ?? Colors.black;
+              _backgroundColor = Colors.transparent;
+            }
           }
 
-          return Container(
+          return AnimatedBuilder(
+            animation: animationController,
+            builder: (_, child) {
+              double flip = 0;
+              if(animationController.value > 0.50){
+                flip = pi;
+              }
+              return Transform(
+                alignment: Alignment.center,
+              transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+                ..rotateX(animationController.value * pi)
+                  ..rotateX(flip),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: flip > 0 ? _backgroundColor : Colors.transparent,
+                  border: Border.all(
+                    color: flip > 0 ? Colors.transparent : _borderColor,
+                  )
+                ),
+                  child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: flip > 0 ?
+                        Text(text, style: const TextStyle().copyWith(
+                          color: fontColor
+                        ),) : Text(text)
+                      ))),
+            );
+            },
+          );
+        }else{return Container(
+          decoration: BoxDecoration(
               color: _backgroundColor,
-              child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Text(text, style: const TextStyle().copyWith(
-                      color: fontColor
-                    ),),
-                  )));
-        }else{return const SizedBox();}
+              border: Border.all(
+                color: _borderColor,
+              )
+          ),
+        );}
       });
   }
 }

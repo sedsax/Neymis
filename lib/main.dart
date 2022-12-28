@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:neymis/constants/colors.dart';
-import 'package:neymis/controller.dart';
+import 'package:neymis/providers/controller.dart';
+import 'package:neymis/providers/theme_provider.dart';
+import 'package:neymis/themes/theme_preferences.dart';
+import 'package:neymis/themes/themes.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/home_page.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => Controller())
-    ],
-
-      child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,26 +16,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColorLight: lightThemeLightShade,
-        primaryColorDark: lightThemeDarkShade,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          )
-        ),
-            scaffoldBackgroundColor: Colors.white,
-        textTheme: const TextTheme().copyWith(
-          bodyText2: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)
-        )
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => Controller()),
+      ChangeNotifierProvider(create: (_) => ThemeProvider()),
+    ],
+      child: FutureBuilder(
+        initialData: false,
+        future: ThemePreferences.getTheme(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              Provider.of<ThemeProvider>(context, listen: false).setTheme(turnOn: snapshot.data as bool);
+            });
+          }
+
+          return Consumer<ThemeProvider>(
+            builder: (_, notifier, __) => MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+              theme: notifier.isDark ? darkTheme : lightTheme,
+              home: const HomePage(),
+            ),
+          );
+        },
       ),
-      home: const HomePage(),
     );
   }
 }

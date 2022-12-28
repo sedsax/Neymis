@@ -1,8 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:neymis/components/stats_box.dart';
 import 'package:neymis/constants/words.dart';
-import 'package:neymis/controller.dart';
+import 'package:neymis/pages/settings.dart';
+import 'package:neymis/providers/controller.dart';
+import 'package:neymis/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../components/grid.dart';
@@ -38,6 +41,17 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Neymiş?"),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(onPressed: (){
+            showDialog(context: context, builder: (_) => StatsBox());
+          },
+              icon: Icon(Icons.bar_chart_outlined)),
+          IconButton(onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Settings()));
+          },
+              icon: const Icon(Icons.settings)
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -52,9 +66,9 @@ class _HomePageState extends State<HomePage> {
               flex: 4,
               child: Column(
                 children: const [
-                  KeyboardRow(min: 1, max: 12),
-                  KeyboardRow(min: 13, max: 23),
-                  KeyboardRow(min: 24, max: 34),
+                  KeyboardRow(min: 1, max: 10),
+                  KeyboardRow(min: 11, max: 21),
+                  KeyboardRow(min: 22, max: 32),
                 ],
               )),
         ],

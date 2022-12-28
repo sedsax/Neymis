@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neymis/constants/answer_stages.dart';
 import 'package:neymis/constants/colors.dart';
-import 'package:neymis/controller.dart';
+import 'package:neymis/providers/controller.dart';
 import 'package:provider/provider.dart';
 
 import '../data/keys_map.dart';
@@ -53,7 +53,9 @@ class KeyboardRow extends StatelessWidget {
                           onTap: (){
                             Provider.of<Controller>(context, listen: false).setKeyTapped(value: e.key);
                           },
-                            child: Center(child: Text(e.key, style:
+                            child: Center(child:
+                                e.key == 'SİL' ? const Icon(Icons.backspace_outlined) :
+                            Text(e.key, style:
                               Theme.of(context).textTheme.bodyText2?.copyWith(
                                 color: keyColor,
                               )
