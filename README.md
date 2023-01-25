@@ -1,16 +1,8 @@
-# neymis
+### NEYMİŞ? => Kelime Oyunu
 
-A new Flutter project.
+# 5 harfli bir kelimeyi en fazla 6 denemede bulmaya çalışıyoruz. Denediğimiz her bir kelimede renkler bize yardımcı oluyor:
+# Kelime kutusu yeşil ise -> harf doğru yerde var 
+# Kelime kutusu sarı ise -> harf var ama yanlış yerde
+# Kelime kutusu gri ise -> harf kelimede yok demektir.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![alt text](https://github.com/sedsax/Neymis/blob/master/ProjeS%C3%BCreci/EkranG%C3%B6r%C3%BCnt%C3%BCleri/wwr1.PNG)
