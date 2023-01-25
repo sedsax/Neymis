@@ -13,6 +13,7 @@ Aşağıdaki temel başlıklar olmak üzere birçok widget ve yapı projede kull
 * Provider
 * ThemeData
 
+Proje Sunumuna buradan ulaşabilirsiniz: [Flutter Dersi Proje Sunumu](https://github.com/sedsax/Neymis/blob/master/ProjeS%C3%BCreci/Project/Flutter%20Dersi%20Proje%20Sunumu.pdf)
 
 ![alt text](https://github.com/sedsax/Neymis/blob/master/ProjeS%C3%BCreci/EkranG%C3%B6r%C3%BCnt%C3%BCleri/wwr1.PNG)
 ![alt text](https://github.com/sedsax/Neymis/blob/master/ProjeS%C3%BCreci/EkranG%C3%B6r%C3%BCnt%C3%BCleri/wwr2.PNG)
